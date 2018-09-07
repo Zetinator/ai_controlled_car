@@ -6,9 +6,7 @@ from __future__ import division
 # ROS packages
 import roslib
 import rospy
-from std_msgs.msg import String
 from sensor_msgs.msg import Image
-from sensor_msgs.msg import CompressedImage
 roslib.load_manifest('preprocessing')
 
 # openCV package
