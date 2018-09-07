@@ -46,21 +46,17 @@ class image_converter:
     mask_image = cv2.bitwise_and(gray, mask_white)
 
     # ROI
-    mask_roi = np.zeros_like(gray)
-    mask_roi[240:410,:] = 1
-    mask_image = cv2.bitwise_and(mask_white, mask_roi)
-    mask_image = mask_image * 255
+    mask_roi = mask_image[240:410,:] # 170,640
 
     # resize
-    # mask_image = cv2.resize(mask_image,(80, 60))
-    mask_image = cv2.resize(mask_image,(160, 120))
+    mask_roi = cv2.resize(mask_roi,(160, 90))
 
     cv2.imshow('original... ', cv_image)
-    cv2.imshow('show me the goodies... ', mask_image)
+    cv2.imshow('show me the goodies... ', mask_roi)
     cv2.waitKey(3)
 
     try:
-      self.image_pub.publish(self.bridge.cv2_to_imgmsg(mask_image, encoding='mono8'))
+      self.image_pub.publish(self.bridge.cv2_to_imgmsg(mask_roi, encoding='mono8'))
     except CvBridgeError as e:
       print(e)
 
