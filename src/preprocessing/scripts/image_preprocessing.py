@@ -32,39 +32,35 @@ class image_converter:
     except CvBridgeError as e:
       print(e)
 
-    # change to hsv colorspace
-    hsv = cv2.cvtColor(cv_image, cv2.COLOR_BGR2HSV)
-    gray = cv2.cvtColor(cv_image, cv2.COLOR_BGR2GRAY)
-
-    # apply color masks
-    lower_white = np.array([0,0,0], dtype=np.uint8)
-    upper_white = np.array([0,0,255], dtype=np.uint8)
-    # lower_yellow = np.array([20,100,100], dtype=np.uint8)
-    # upper_yellow = np.array([30,255,255], dtype=np.uint8)
-
-    mask_white = cv2.inRange(hsv, lower_white, upper_white)
-    # mask_yellow = cv2.inRange(hsv, lower_yellow, upper_yellow)
-
-    # mask_yw = cv2.bitwise_or(mask_white, mask_yellow)
-    mask_image = cv2.bitwise_and(gray, mask_white)
+    #gray
+    gray =  cv2.cvtColor(cv_image, cv2.COLOR_BGR2GRAY)
 
     # noise filters
-    gauss_gray = cv2.GaussianBlur(mask_image,(5,5),0)
+    gray = cv2.GaussianBlur(gray,(7,7),0)
+    # remap to 0-255
+    gray = (gray/gray.max())*255
+    gray = gray.astype('uint8')
 
-    # canny filter
-    threshold1 = 50
-    threshold2 = 150
-    canny_edges = cv2.Canny(gauss_gray,threshold1,threshold2)
+    # mask_white = cv2.inRange(gray, 230, 255)
+    mask_white = cv2.inRange(gray, 200, 255)
+    mask_image = cv2.bitwise_and(gray, mask_white)
 
-    # # ROI
-    # mask = np.zeros_like(cv_image)
+    # ROI
+    mask_roi = np.zeros_like(gray)
+    mask_roi[240:410,:] = 1
+    mask_image = cv2.bitwise_and(mask_white, mask_roi)
+    mask_image = mask_image * 255
 
+    # resize
+    # mask_image = cv2.resize(mask_image,(80, 60))
+    mask_image = cv2.resize(mask_image,(160, 120))
 
-    cv2.imshow("Image_captured", canny_edges)
+    cv2.imshow('original... ', cv_image)
+    cv2.imshow('show me the goodies... ', mask_image)
     cv2.waitKey(3)
 
     try:
-      self.image_pub.publish(self.bridge.cv2_to_imgmsg(cv_image, encoding='rgb8'))
+      self.image_pub.publish(self.bridge.cv2_to_imgmsg(mask_image, encoding='mono8'))
     except CvBridgeError as e:
       print(e)
 
@@ -79,4 +75,3 @@ def main(args):
 
 if __name__ == '__main__':
     main(sys.argv)
-
