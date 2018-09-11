@@ -1,5 +1,5 @@
 # ai_control
-This repository is meant to control a [car model](https://github.com/AutoModelCar), using neural networks in order to follow trajectory within his lane and avoid a moving obstacle.
+This repository is meant to control a [car model](https://github.com/AutoModelCar), using neural networks in order to follow a trajectory within his lane and avoid a moving obstacle.
 
 ### Tested with the following settings
 - ROS (lunar, 1.13.6)
