@@ -8,4 +8,4 @@ In the terminal run the following commands:
 rosrun preprocessing image_preprocessing.py
 ```
 
-The node will **subscribe** to the topic called `/app/camera/rgb/image_raw` and the **publish** on the topic called `/image_preprocessed` the lanes detected.
+The node will **subscribe** to the topic called `/app/camera/rgb/image_raw` and then **publish** on the topic called `/image_preprocessed` the lanes detected.
