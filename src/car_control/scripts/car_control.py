@@ -26,8 +26,14 @@ class CarController:
         self.steering = 90
 
         # Communication
-        self.steering_pub = rospy.Publisher("/manual_control/steering", Int16, queue_size=10)
-        self.speed_pub = rospy.Publisher("/manual_control/speed", Int16, queue_size=10)
+        # real car
+        # self.steering_pub = rospy.Publisher("/manual_control/steering", Int16, queue_size=10)
+        # self.speed_pub = rospy.Publisher("/manual_control/speed", Int16, queue_size=10)
+
+        # Simulation
+        self.steering_pub = rospy.Publisher("/AutoNOMOS_mini/manual_control/steering", Int16, queue_size=10)
+        self.speed_pub = rospy.Publisher("/AutoNOMOS_mini/manual_control/speed", Int16, queue_size=10)
+
 
         rospy.topics.Subscriber("/joy", Joy, self.read_joystick)
 
