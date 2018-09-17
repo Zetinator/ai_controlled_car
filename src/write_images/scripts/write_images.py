@@ -7,7 +7,8 @@ from __future__ import division
 import roslib
 import rospy
 from sensor_msgs.msg import Image
-roslib.load_manifest('preprocessing')
+from std_msgs.msg import Int16
+roslib.load_manifest('write_images')
 
 # openCV package
 import cv2
@@ -19,10 +20,15 @@ import numpy as np
 class image_converter:
 
   def __init__(self):
-    self.image_pub = rospy.Publisher("image_preprocessed",Image, queue_size=10)
+    # state variable
+    self.steering = 0
+    self.speed = 0
 
     self.bridge = CvBridge()
     self.image_sub = rospy.Subscriber("/app/camera/rgb/image_raw",Image,self.image_callback, queue_size=10)
+    self.steering_sub = rospy.Subscriber("/AutoNOMOS_mini/manual_control/steering",Int16,self.steering_callback, queue_size=10)
+    self.speed_sub = rospy.Subscriber("/AutoNOMOS_mini/manual_control/speed",Int16,self.speed_callback, queue_size=10)
+
 
   def image_callback(self,data):
     try:
@@ -51,14 +57,21 @@ class image_converter:
 
     current_sim_time = data.header.stamp
 
-    # cv2.imwrite('original_image_' + str(current_sim_time) + '.png', cv_image)
+    # write images
     cv2.imwrite('processed_image_' + str(current_sim_time) + '.png', mask_roi)
+
+    with open('steeering_data.txt', 'a') as myfile:
+        myfile.write(str(self.steering) + '\n')
+
+    with open('speed_data.txt', 'a') as myfile:
+        myfile.write(str(self.speed) + '\n')
     cv2.waitKey(3)
 
-    # try:
-    #   self.image_pub.publish(self.bridge.cv2_to_imgmsg(mask_roi, encoding='mono8'))
-    # except CvBridgeError as e:
-    #   print(e)
+  def steering_callback(self,data):
+    self.steering = data.data
+
+  def speed_callback(self,data):
+    self.speed = data.data
 
 def main(args):
   ic = image_converter()
