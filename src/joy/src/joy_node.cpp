@@ -305,8 +305,8 @@ public:
         ie.code = FF_GAIN;
         ie.value = 0xFFFFUL * gain / 100;
 
-        if (write(ff_fd_, &ie, sizeof(ie)) == -1)
-          ROS_ERROR("Couldn't open joystick force feedback!");//perror("set gain");
+        //if (write(ff_fd_, &ie, sizeof(ie)) == -1)
+          //ROS_ERROR("Couldn't open joystick force feedback!");//perror("set gain");
 
         joy_effect_.id = -1;//0;
         joy_effect_.direction = 0;//down
