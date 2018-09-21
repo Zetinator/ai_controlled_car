@@ -53,7 +53,7 @@ class image_converter:
     mask_roi = mask_image[240:410,:] # 170,640
 
     # resize
-    mask_roi = cv2.resize(mask_roi,(160, 90))
+    mask_roi = cv2.resize(mask_roi,(80,40))
 
     current_sim_time = data.header.stamp
 

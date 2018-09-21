@@ -8,3 +8,4 @@ logs/
 /.metadata/
 src/preprocessing/resources
 src/write_images/resources
+*.swp
