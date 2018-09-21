@@ -7,4 +7,6 @@
     <node name="car_control" pkg="car_control" type="car_control.py">
     </node>
 
+    <node name="joystick_listener" pkg="joy" type="joy_node" >
+    </node>
 </launch>
