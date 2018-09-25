@@ -15,8 +15,6 @@ import sys
 import numpy as np
 
 
-# TODO: msg.header.stamp.to_sec() adapt
-
 class CarController:
     def __init__(self):
         self.msg_timestamps = []
@@ -26,6 +24,7 @@ class CarController:
         self.steering = 90
 
         # Communication
+
         # real car
         # self.steering_pub = rospy.Publisher("/manual_control/steering", Int16, queue_size=10)
         # self.speed_pub = rospy.Publisher("/manual_control/speed", Int16, queue_size=10)

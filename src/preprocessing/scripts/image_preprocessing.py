@@ -47,7 +47,7 @@ class image_converter:
     mask_roi = mask_image[240:410,:] # 170,640
 
     # resize
-    mask_roi = cv2.resize(mask_roi,(160, 90))
+    mask_roi = cv2.resize(mask_roi,(80, 40))
 
     cv2.imshow('original... ', cv_image)
     cv2.imshow('show me the goodies... ', mask_roi)
