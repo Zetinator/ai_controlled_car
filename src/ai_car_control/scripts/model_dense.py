@@ -32,7 +32,7 @@ class CNN(object):
 
         # reference
         xin = Conv2D(filters=16, 
-                        strides=4, 
+                        strides=2, 
                         kernel_size=4, 
                         activation='relu', 
                         padding='same')(input)
@@ -41,7 +41,7 @@ class CNN(object):
 
         # skip layer tensor
         skip = Conv2D(filters=1,
-                        strides=4, 
+                        strides=2, 
                         kernel_size=4,
                         padding='same',
                         activation='relu')(input)
@@ -52,7 +52,7 @@ class CNN(object):
         # parallel stage
         dilation_rate = 1
         y = xin
-        for i in range(5):
+        for i in range(3):
             a = Conv2D(filters=32,
                         kernel_size=5,
                         padding='same',
@@ -66,9 +66,9 @@ class CNN(object):
         # dense interconnection inspired by DenseNet
         dilation_rate = 1
         x = skip
-        for i in range(3):
+        for i in range(5):
             x = keras.layers.concatenate([x, y])
-            y = Conv2D(filters=32,
+            y = Conv2D(filters=64,
                         activation='relu', 
                         kernel_size=1,
                         padding='same')(y)
@@ -86,8 +86,9 @@ class CNN(object):
         # input image skip connection to disparity estimate
         x = keras.layers.concatenate([y, skip])
         y = Conv2D(filters=1, 
+                        strides=2, 
                         activation='relu', 
-                        kernel_size=5, 
+                        kernel_size=4, 
                         padding='same')(x)
         y = BatchNormalization()(y)
         
@@ -97,8 +98,7 @@ class CNN(object):
         # output
         output = Dense(1, 
                         activation='linear',
-                        use_bias=True,
-                        bias_initializer='zeros')(y)
+                        use_bias=True)(y)
 
         # CNN model
         self.model = Model(input,output)
