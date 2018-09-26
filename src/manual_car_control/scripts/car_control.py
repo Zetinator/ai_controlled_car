@@ -48,10 +48,10 @@ class CarController:
             self.stop()
         # acceleration
         if (joystick_input.axes[5] < 1):
-            self.pubSpeed((joystick_input.axes[5]-1)/2 *280)
+            self.pubSpeed((joystick_input.axes[5]-1)/2 *500)
         # reverse
         if (joystick_input.buttons[4] and joystick_input.axes[2] < 1):
-            self.pubSpeed((joystick_input.axes[5]-1)/2 * (-280))
+            self.pubSpeed((joystick_input.axes[5]-1)/2 * (-500))
         # steering
         self.pubSteering(joystick_input.axes[0]*(90) + 90)
 

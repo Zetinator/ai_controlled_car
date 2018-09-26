@@ -91,12 +91,12 @@ class CarController:
         image = image/255
 
         # acceleration
-        self.speed = -280/2
+        self.speed = -500
         self.pubSpeed(self.speed)
         # steering
 
         self.steering = self.model.predict(image)
-        self.steering = self.steering * 180 
+        self.steering = self.steering * 180
         self.pubSteering(self.steering)
         print('steering --> ' + str(self.steering))
 

@@ -107,6 +107,6 @@ class CNN(object):
             self.model.load_weights(self.settings.model_weights)
             print('---> SUCCESS')
 
-        # self.model.compile(loss='mse',
-                           # optimizer=RMSprop(lr=lr))
+        self.model.compile(loss='mse',
+                           optimizer=RMSprop(lr=lr))
         return self.model
