@@ -1,0 +1,10 @@
+<launch>
+
+    <node name="image_preprocessing" pkg="preprocessing" type="image_preprocessing.py" >
+        <!-- <param name="example" type="string" value="value_example"/> -->
+    </node>
+
+    <node name="ai_car_control" pkg="ai_car_control" type="ai_car_control.py" output="screen" >
+    </node>
+
+</launch>
