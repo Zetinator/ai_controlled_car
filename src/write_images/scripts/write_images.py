@@ -63,7 +63,7 @@ class image_converter:
 
         if self.record_button_state:
             # write images
-            cv2.imwrite('processed_image_' + str(self.current_sim_time) + '.png', mask_roi)
+            cv2.imwrite(str(self.current_sim_time) + '.png', mask_roi)
 
             # write labels 
             with open('labels.txt', 'a') as myfile:
