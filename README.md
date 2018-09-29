@@ -11,7 +11,7 @@ Watch it in action in the following [video](https://www.youtube.com/watch?v=G2Vf
 - **Ubuntu** (16.04.5 LTS)
 - **python-catkin-tools**
 
-# How to build
+## How to build
 On the root directory (where this `README.md` file can be found) execute the following commands:
 
 ```bash
