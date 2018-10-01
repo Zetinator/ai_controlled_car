@@ -61,13 +61,20 @@ class image_converter:
         # get current time
         self.current_sim_time = data.header.stamp
 
+        # lanes to write one hot encoding
+        out_left =  '1'
+        left =      '0'
+        right =     '0'
+        out_right = '0'
+
         if self.record_button_state:
             # write images
             cv2.imwrite(str(self.current_sim_time) + '.png', mask_roi)
 
+
             # write labels 
             with open('labels.txt', 'a') as myfile:
-                myfile.write(str(self.steering) + ', ' + str(self.speed) + ', ' + str(self.current_sim_time) + '\n')
+                myfile.write(str(self.steering) + ', ' + out_left + ', ' + left + ', ' + right + ', ' + out_right + ', ' + str(self.current_sim_time) + '\n')
 
     def steering_callback(self,data):
         self.steering = data.data
