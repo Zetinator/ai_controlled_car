@@ -53,7 +53,7 @@ class CarController:
         self.settings.ydim = 40
         self.settings.xdim = 80
         self.settings.channels = 1
-        self.settings.model_weights = "/DATA/Documents/ai_controlled_car/src/ai_car_control/weights/where_4_v1.h5"
+        self.settings.model_weights = "/DATA/Documents/ai_controlled_car/src/ai_car_control/weights/where_4_v2.h5"
 
         # load model
         print("WARMING UP...")
