@@ -53,7 +53,7 @@ class CarController:
         self.settings.ydim = 40
         self.settings.xdim = 80
         self.settings.channels = 1
-        self.settings.model_weights = "/DATA/Documents/ai_controlled_car/src/ai_car_control/weights/v2.h5"
+        self.settings.model_weights = "/DATA/Documents/ai_controlled_car/src/ai_car_control/weights/where_4_v1.h5"
 
         # load model
         print("WARMING UP...")
@@ -95,10 +95,16 @@ class CarController:
         self.pubSpeed(self.speed)
         # steering
 
-        self.steering = self.model.predict(image)
+        prediction = self.model.predict(image)
+        # print(prediction.shape)
+        [self.steering, out_left, left, right, out_right] = prediction[0]
         self.steering = self.steering * 180
         self.pubSteering(self.steering)
-        print('steering --> ' + str(self.steering))
+        print('steering     --> ' + str(self.steering))
+        print('out_left     --> ' + str(out_left))
+        print('left         --> ' + str(left))
+        print('right        --> ' + str(right))
+        print('out_right    --> ' + str(out_right))
 
 
 
