@@ -30,9 +30,9 @@ class CarController:
         # self.speed_pub = rospy.Publisher("/manual_control/speed", Int16, queue_size=10)
 
         # Simulation
-        self.steering_pub = rospy.Publisher("/AutoNOMOS_mini/manual_control/steering", Int16, queue_size=10)
-        self.speed_pub = rospy.Publisher("/AutoNOMOS_mini/manual_control/speed", Int16, queue_size=10)
-
+        car_ID = rospy.get_param('~car_ID')
+        self.steering_pub = rospy.Publisher("/" + car_ID + "/manual_control/steering", Int16, queue_size=10)
+        self.speed_pub = rospy.Publisher("/" + car_ID + "/manual_control/speed", Int16, queue_size=10)
 
         rospy.topics.Subscriber("/joy", Joy, self.read_joystick)
 
@@ -48,16 +48,16 @@ class CarController:
             self.stop()
         # acceleration
         if (joystick_input.axes[5] < 1):
-            self.pubSpeed((joystick_input.axes[5]-1)/2 *500)
+            self.pub_speed((joystick_input.axes[5]-1)/2 *500)
         # reverse
         if (joystick_input.buttons[4] and joystick_input.axes[2] < 1):
-            self.pubSpeed((joystick_input.axes[5]-1)/2 * (-500))
+            self.pub_speed((joystick_input.axes[5]-1)/2 * (-500))
         # steering
-        self.pubSteering(joystick_input.axes[0]*(90) + 90)
+        self.pub_steering(joystick_input.axes[0]*(90) + 90)
 
 
     def stop(self):
-        self.pubSpeed(0)
+        self.pub_speed(0)
 
     # TODO: ai_control
     # def setSpeed(self, speed):
@@ -66,10 +66,10 @@ class CarController:
     # def setSteering(self, steering):
     #     self.steering = steering.data
 
-    def pubSteering(self, deg_value):
+    def pub_steering(self, deg_value):
         self.steering_pub.publish(deg_value)
 
-    def pubSpeed(self, speed):
+    def pub_speed(self, speed):
         self.speed_pub.publish(speed)
 
     def print_state(self):

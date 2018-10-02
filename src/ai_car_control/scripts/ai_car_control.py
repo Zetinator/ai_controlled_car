@@ -44,7 +44,7 @@ class CarController:
         self.lidar_received = None
 
         # parametric variables
-        self.max_speed = 1000
+        self.max_speed = rospy.get_param('~max_speed', '1000')
 
         # state variables
         self.speed = 0
@@ -62,7 +62,9 @@ class CarController:
         self.settings.ydim = 40
         self.settings.xdim = 80
         self.settings.channels = 1
-        self.settings.model_weights = "/DATA/Documents/ai_controlled_car/src/ai_car_control/weights/show_me_your_skills.h5"
+
+        weights_path = rospy.get_param('~weights_path')
+        self.settings.model_weights = weights_path
 
         # load model
         print("WARMING UP...")
@@ -80,10 +82,11 @@ class CarController:
         # self.speed_pub = rospy.Publisher("/manual_control/speed", Int16, queue_size=10)
 
         # Simulation
+        car_ID = rospy.get_param('~car_ID')
         self.image_sub = rospy.Subscriber("/image_preprocessed", Image, self.image_callback, queue_size=10)
         self.image_sub = rospy.Subscriber("/scan", LaserScan, self.lidar_callback, queue_size=10)
-        self.steering_pub = rospy.Publisher("/AutoNOMOS_mini/manual_control/steering", Int16, queue_size=10)
-        self.speed_pub = rospy.Publisher("/AutoNOMOS_mini/manual_control/speed", Int16, queue_size=10)
+        self.steering_pub = rospy.Publisher("/" + car_ID + "/manual_control/steering", Int16, queue_size=10)
+        self.speed_pub = rospy.Publisher("/" + car_ID + "/manual_control/speed", Int16, queue_size=10)
 
 
 

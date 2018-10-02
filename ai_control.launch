@@ -1,10 +1,11 @@
 <launch>
-
-    <node name="image_preprocessing" pkg="preprocessing" type="image_preprocessing.py" >
-        <!-- <param name="example" type="string" value="value_example"/> -->
-    </node>
-
-    <node name="ai_car_control" pkg="ai_car_control" type="ai_car_control.py" output="screen" >
-    </node>
+  <node name="image_preprocessing" pkg="preprocessing" type="image_preprocessing.py" >
+    <!-- <param name="example" type="string" value="value_example"/> -->
+  </node>
+  <node name="ai_car_control" pkg="ai_car_control" type="ai_car_control.py" output="screen" >
+    <param name="weights_path" type="string" value="/DATA/Documents/ai_controlled_car/src/ai_car_control/weights/show_me_your_skills.h5"/>
+    <param name="max_speed" type="int" value="1000"/>
+    <param name="car_ID" type="string" value="AutoNOMOS_mini"/>
+  </node>
 
 </launch>

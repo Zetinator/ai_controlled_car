@@ -5,6 +5,7 @@
     </node>
 
     <node name="car_control" pkg="car_control" type="car_control.py">
+      <param name="car_ID" type="string" value="AutoNOMOS_mini"/>
     </node>
 
     <node name="joystick_listener" pkg="joy" type="joy_node" >
