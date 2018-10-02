@@ -108,7 +108,7 @@ class CarController:
         # dynamic acceleration
         self.dynamic_speed()
         # publish speed
-        self.pubSpeed(self.speed)
+        self.pub_speed(self.speed)
         # obstacle avoidance implemented
         self.obstacle_avoidance()
         # print actual state variables
@@ -138,9 +138,9 @@ class CarController:
         ranges = np.array(self.lidar_received.ranges)
         min_distance = 1
         if (min(ranges[:8]) < min_distance or min(ranges[-14:-1]) < min_distance):
-            self.pubSteering(180)
+            self.pub_steering(180)
         else:
-            self.pubSteering(self.steering)
+            self.pub_steering(self.steering)
 
         # enfoque solucion... cuando llegue a otro estado
         # state_vector = [self.out_left, self.left, self.center, self.right, self.out_right]
