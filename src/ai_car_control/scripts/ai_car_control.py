@@ -45,7 +45,7 @@ class CarController:
 
         # parametric variables
         self.max_speed = 1000
-        
+
         # state variables
         self.speed = 0
         self.steering = 90
@@ -102,29 +102,9 @@ class CarController:
 
     def predict(self, image):
         image = image/255
-<<<<<<< HEAD
-
-        # acceleration
-        self.speed = -500
-        self.pub_speed(self.speed)
-        # steering
-
-=======
->>>>>>> please_behave
         prediction = self.model.predict(image)
         [self.steering, self.out_left, self.left, self.center, self.right, self.out_right] = prediction[0]
         self.steering = self.steering * 180
-<<<<<<< HEAD
-        self.pub_steering(self.steering)
-        print('steering     --> ' + str(self.steering))
-        print('out_left     --> ' + str(out_left))
-        print('left         --> ' + str(left))
-        print('center       --> ' + str(center))
-        print('right        --> ' + str(right))
-        print('out_right    --> ' + str(out_right))
-
-
-=======
         # dynamic acceleration
         self.dynamic_speed()
         # publish speed
@@ -141,10 +121,9 @@ class CarController:
             aux = abs(90 - self.steering)/45
         else:
             aux = 1
-        #cuadratic interpolation 
+        #cuadratic interpolation
         aux = (1 - .375 * aux**2) * self.max_speed
         self.speed = -aux
->>>>>>> please_behave
 
     def stop(self):
         self.pub_speed(0)
