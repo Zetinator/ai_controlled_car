@@ -96,7 +96,7 @@ class CNN(object):
         y = Flatten()(y)
 
         # output
-        output = Dense(5,
+        output = Dense(6,
                         activation='linear',
                         use_bias=True)(y)
 

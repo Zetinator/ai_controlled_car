@@ -60,10 +60,13 @@ class image_converter:
 
         # get current time
         self.current_sim_time = data.header.stamp
+        # offset
+        self.current_sim_time = int(str(self.current_sim_time)) + 2146201000000
 
         # lanes to write one hot encoding
-        out_left =  '1'
-        left =      '0'
+        out_left =  '0'
+        left =      '1'
+        center =    '0'
         right =     '0'
         out_right = '0'
 
@@ -74,7 +77,12 @@ class image_converter:
 
             # write labels 
             with open('labels.txt', 'a') as myfile:
-                myfile.write(str(self.steering) + ', ' + out_left + ', ' + left + ', ' + right + ', ' + out_right + ', ' + str(self.current_sim_time) + '\n')
+                myfile.write(str(self.steering) + ', ' + out_left
+                                                + ', ' + left 
+                                                + ', ' + center
+                                                + ', ' + right
+                                                + ', ' + out_right
+                                                + ', ' + str(self.current_sim_time) + '\n')
 
     def steering_callback(self,data):
         self.steering = data.data
