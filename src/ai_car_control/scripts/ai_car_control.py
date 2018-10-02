@@ -92,14 +92,14 @@ class CarController:
 
         # acceleration
         self.speed = -500
-        self.pubSpeed(self.speed)
+        self.pub_speed(self.speed)
         # steering
 
         prediction = self.model.predict(image)
         # print(prediction.shape)
         [self.steering, out_left, left, center, right, out_right] = prediction[0]
         self.steering = self.steering * 180
-        self.pubSteering(self.steering)
+        self.pub_steering(self.steering)
         print('steering     --> ' + str(self.steering))
         print('out_left     --> ' + str(out_left))
         print('left         --> ' + str(left))
@@ -110,12 +110,12 @@ class CarController:
 
 
     def stop(self):
-        self.pubSpeed(0)
+        self.pub_speed(0)
 
-    def pubSteering(self, deg_value):
+    def pub_steering(self, deg_value):
         self.steering_pub.publish(deg_value)
 
-    def pubSpeed(self, speed):
+    def pub_speed(self, speed):
         self.speed_pub.publish(speed)
 
     def print_state(self):
