@@ -1,4 +1,4 @@
-# ai_control
+# ai_controlled_car
 This repository is meant to control a [car model](https://github.com/AutoModelCar), using neural networks in order to follow a trajectory within his lane and avoid moving obstacles.
 
 Watch it in action in the following [video](https://www.youtube.com/watch?v=G2VfvcxQOz4)
