@@ -107,10 +107,10 @@ class CarController:
         self.steering = self.steering * 180
         # dynamic acceleration
         self.dynamic_speed()
-        # publish state variables
+        # publish speed
         self.pubSpeed(self.speed)
+        # obstacle avoidance implemented
         self.obstacle_avoidance()
-        # self.pubSteering(self.steering)
         # print actual state variables
         self.print_state()
 
@@ -139,15 +139,12 @@ class CarController:
         min_distance = 1
         if (min(ranges[:8]) < min_distance or min(ranges[-14:-1]) < min_distance):
             self.pubSteering(180)
-            # print('AVOIDING...')
         else:
             self.pubSteering(self.steering)
-            # print('...')
 
         # enfoque solucion... cuando llegue a otro estado
         # state_vector = [self.out_left, self.left, self.center, self.right, self.out_right]
         # actual_state = state_vector.index(max(state_vector))
-        # print(ranges[0],ranges[-1])
 
     def print_state(self):
         print('steering     --> ' + str(self.steering))
