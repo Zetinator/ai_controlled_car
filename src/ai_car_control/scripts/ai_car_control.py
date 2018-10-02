@@ -97,12 +97,13 @@ class CarController:
 
         prediction = self.model.predict(image)
         # print(prediction.shape)
-        [self.steering, out_left, left, right, out_right] = prediction[0]
+        [self.steering, out_left, left, center, right, out_right] = prediction[0]
         self.steering = self.steering * 180
         self.pubSteering(self.steering)
         print('steering     --> ' + str(self.steering))
         print('out_left     --> ' + str(out_left))
         print('left         --> ' + str(left))
+        print('center       --> ' + str(center))
         print('right        --> ' + str(right))
         print('out_right    --> ' + str(out_right))
 
