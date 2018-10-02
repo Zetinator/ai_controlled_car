@@ -7,7 +7,7 @@ from __future__ import absolute_import
 # ROS packages
 import roslib
 import rospy
-from sensor_msgs.msg import Image
+from sensor_msgs.msg import Image, LaserScan
 from std_msgs.msg import String, Int16
 roslib.load_manifest('ai_car_control')
 
@@ -42,9 +42,16 @@ class CarController:
         self.running_framerate = None
         self.network = None
         self.image_received = None
+        self.lidar_received = None
 
+        # state variables
         self.speed = 0
         self.steering = 90
+        self.out_left = 0
+        self.left = 0
+        self.center = 0
+        self.right = 0
+        self.out_right = 0
 
         # cnn settings
         self.settings = Settings()
@@ -71,7 +78,8 @@ class CarController:
         # self.speed_pub = rospy.Publisher("/manual_control/speed", Int16, queue_size=10)
 
         # Simulation
-        self.image_sub = rospy.Subscriber("/image_preprocessed",Image,self.image_callback, queue_size=10)
+        self.image_sub = rospy.Subscriber("/image_preprocessed", Image, self.image_callback, queue_size=10)
+        self.image_sub = rospy.Subscriber("/scan", LaserScan, self.lidar_callback, queue_size=10)
         self.steering_pub = rospy.Publisher("/AutoNOMOS_mini/manual_control/steering", Int16, queue_size=10)
         self.speed_pub = rospy.Publisher("/AutoNOMOS_mini/manual_control/speed", Int16, queue_size=10)
 
@@ -86,28 +94,34 @@ class CarController:
         except CvBridgeError as e:
           print(e)
 
+    def lidar_callback(self,data):
+        self.lidar_received = data
+        self.obstacle_avoidance()
 
     def predict(self, image):
         image = image/255
 
-        # acceleration
-        self.speed = -500
-        self.pubSpeed(self.speed)
-        # steering
-
         prediction = self.model.predict(image)
-        # print(prediction.shape)
-        [self.steering, out_left, left, center, right, out_right] = prediction[0]
+        [self.steering, self.out_left, self.left, self.center, self.right, self.out_right] = prediction[0]
         self.steering = self.steering * 180
+        # steering
         self.pubSteering(self.steering)
-        print('steering     --> ' + str(self.steering))
-        print('out_left     --> ' + str(out_left))
-        print('left         --> ' + str(left))
-        print('center       --> ' + str(center))
-        print('right        --> ' + str(right))
-        print('out_right    --> ' + str(out_right))
+        # dynamic acceleration
+        # self.speed = -1000
+        self.dynamic_speed()
+        self.pubSpeed(self.speed)
+        self.print_state()
 
-
+    def dynamic_speed(self):
+        aux = self.speed
+        # normalize
+        if(abs(90 - self.steering) < 45):
+            aux = abs(90 - self.steering)/45
+        else:
+            aux = 1
+        #cuadratic interpolation 
+        aux = (1 - .375 * aux**2) * 1000
+        self.speed = -aux
 
     def stop(self):
         self.pubSpeed(0)
@@ -118,9 +132,18 @@ class CarController:
     def pubSpeed(self, speed):
         self.speed_pub.publish(speed)
 
+    def obstacle_avoidance(self):
+        ranges = self.lidar_received.ranges
+        # print(ranges[0],ranges[-1])
+
     def print_state(self):
-        print("Speed    --> %d " %(self.speed))
-        print("Steering --> %d " %(self.steering))
+        print('steering     --> ' + str(self.steering))
+        print('speed        --> ' + str(self.speed))
+        print('out_left     --> ' + str(self.out_left))
+        print('left         --> ' + str(self.left))
+        print('center       --> ' + str(self.center))
+        print('right        --> ' + str(self.right))
+        print('out_right    --> ' + str(self.out_right))
 
 def main(args):
   rospy.init_node('ai_car_control', anonymous=True)
