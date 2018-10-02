@@ -38,12 +38,14 @@ import tensorflow as tf
 
 class CarController:
     def __init__(self):
-        self.msg_timestamps = []
-        self.running_framerate = None
+        # set-up
         self.network = None
         self.image_received = None
         self.lidar_received = None
 
+        # parametric variables
+        self.max_speed = 1000
+        
         # state variables
         self.speed = 0
         self.steering = 90
@@ -100,16 +102,16 @@ class CarController:
 
     def predict(self, image):
         image = image/255
-
         prediction = self.model.predict(image)
         [self.steering, self.out_left, self.left, self.center, self.right, self.out_right] = prediction[0]
         self.steering = self.steering * 180
-        # steering
-        self.pubSteering(self.steering)
         # dynamic acceleration
-        # self.speed = -1000
         self.dynamic_speed()
+        # publish state variables
         self.pubSpeed(self.speed)
+        self.obstacle_avoidance()
+        # self.pubSteering(self.steering)
+        # print actual state variables
         self.print_state()
 
     def dynamic_speed(self):
@@ -120,7 +122,7 @@ class CarController:
         else:
             aux = 1
         #cuadratic interpolation 
-        aux = (1 - .375 * aux**2) * 1000
+        aux = (1 - .375 * aux**2) * self.max_speed
         self.speed = -aux
 
     def stop(self):
@@ -133,17 +135,28 @@ class CarController:
         self.speed_pub.publish(speed)
 
     def obstacle_avoidance(self):
-        ranges = self.lidar_received.ranges
+        ranges = np.array(self.lidar_received.ranges)
+        min_distance = 1
+        if (min(ranges[:8]) < min_distance or min(ranges[-14:-1]) < min_distance):
+            self.pubSteering(180)
+            # print('AVOIDING...')
+        else:
+            self.pubSteering(self.steering)
+            # print('...')
+
+        # enfoque solucion... cuando llegue a otro estado
+        # state_vector = [self.out_left, self.left, self.center, self.right, self.out_right]
+        # actual_state = state_vector.index(max(state_vector))
         # print(ranges[0],ranges[-1])
 
     def print_state(self):
         print('steering     --> ' + str(self.steering))
         print('speed        --> ' + str(self.speed))
-        print('out_left     --> ' + str(self.out_left))
-        print('left         --> ' + str(self.left))
-        print('center       --> ' + str(self.center))
-        print('right        --> ' + str(self.right))
-        print('out_right    --> ' + str(self.out_right))
+        print('out_left     --> ' + str(abs(self.out_left)))
+        print('left         --> ' + str(abs(self.left)))
+        print('center       --> ' + str(abs(self.center)))
+        print('right        --> ' + str(abs(self.right)))
+        print('out_right    --> ' + str(abs(self.out_right)))
 
 def main(args):
   rospy.init_node('ai_car_control', anonymous=True)
