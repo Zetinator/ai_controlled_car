@@ -142,12 +142,10 @@ class CarController:
         min_distance = 1
         if (min(ranges[:8]) < min_distance or min(ranges[-14:-1]) < min_distance):
             self.pub_steering(180)
+        elif (min(ranges[-160:-155]) < min_distance):
+            self.pub_steering(0)
         else:
             self.pub_steering(self.steering)
-
-        # enfoque solucion... cuando llegue a otro estado
-        # state_vector = [self.out_left, self.left, self.center, self.right, self.out_right]
-        # actual_state = state_vector.index(max(state_vector))
 
     def print_state(self):
         print('steering     --> ' + str(self.steering))
