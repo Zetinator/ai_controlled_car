@@ -49,9 +49,9 @@ class image_converter:
     # resize
     mask_roi = cv2.resize(mask_roi,(80, 40))
 
-    cv2.imshow('original... ', cv_image)
-    cv2.imshow('show me the goodies... ', mask_roi)
-    cv2.waitKey(3)
+    # cv2.imshow('original... ', cv_image)
+    # cv2.imshow('show me the goodies... ', mask_roi)
+    # cv2.waitKey(3)
 
     try:
       self.image_pub.publish(self.bridge.cv2_to_imgmsg(mask_roi, encoding='mono8'))
