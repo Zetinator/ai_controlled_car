@@ -33,6 +33,9 @@ class image_converter:
     #gray
     gray =  cv2.cvtColor(cv_image, cv2.COLOR_BGR2GRAY)
 
+    # ROI
+    mask_roi = gray[240:410,:] # 170,640
+
     # noise filters
     gray = cv2.GaussianBlur(gray,(7,7),0)
     # remap to 0-255
@@ -43,18 +46,16 @@ class image_converter:
     mask_white = cv2.inRange(gray, 200, 255)
     mask_image = cv2.bitwise_and(gray, mask_white)
 
-    # ROI
-    mask_roi = mask_image[240:410,:] # 170,640
 
     # resize
-    mask_roi = cv2.resize(mask_roi,(80, 40))
+    image_out = cv2.resize(mask_image,(80, 40))
 
     # cv2.imshow('original... ', cv_image)
     # cv2.imshow('show me the goodies... ', mask_roi)
     # cv2.waitKey(3)
 
     try:
-      self.image_pub.publish(self.bridge.cv2_to_imgmsg(mask_roi, encoding='mono8'))
+      self.image_pub.publish(self.bridge.cv2_to_imgmsg(image_out, encoding='mono8'))
     except CvBridgeError as e:
       print(e)
 
