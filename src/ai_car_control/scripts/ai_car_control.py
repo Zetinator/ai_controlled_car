@@ -25,7 +25,6 @@ import argparse
 import os
 from os import path
 import time
-import matplotlib.pyplot as plt
 from scipy import misc
 
 from utils import Settings
