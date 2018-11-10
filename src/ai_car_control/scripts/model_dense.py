@@ -52,7 +52,7 @@ class CNN(object):
         # parallel stage
         dilation_rate = 1
         y = xin
-        for i in range(3):
+        for i in range(2):
             a = Conv2D(filters=32,
                         kernel_size=5,
                         padding='same',
@@ -66,7 +66,7 @@ class CNN(object):
         # dense interconnection
         dilation_rate = 1
         x = skip
-        for i in range(2):
+        for i in range(1):
             x = keras.layers.concatenate([x, y])
             y = Conv2D(filters=64,
                         activation='relu',

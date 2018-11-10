@@ -77,15 +77,15 @@ class CarController:
         # Communication
 
         # real car
-        self.steering_pub = rospy.Publisher("/manual_control/steering", Int16, queue_size=10)
-        self.speed_pub = rospy.Publisher("/manual_control/speed", Int16, queue_size=10)
+        # self.steering_pub = rospy.Publisher("/manual_control/steering", Int16, queue_size=10)
+        # self.speed_pub = rospy.Publisher("/manual_control/speed", Int16, queue_size=10)
 
         # Simulation
         car_ID = rospy.get_param('~car_ID')
         self.image_sub = rospy.Subscriber("/image_preprocessed", Image, self.image_callback, queue_size=10)
         self.image_sub = rospy.Subscriber("/scan", LaserScan, self.lidar_callback, queue_size=10)
-        # self.steering_pub = rospy.Publisher("/" + car_ID + "/manual_control/steering", Int16, queue_size=10)
-        # self.speed_pub = rospy.Publisher("/" + car_ID + "/manual_control/speed", Int16, queue_size=10)
+        self.steering_pub = rospy.Publisher("/" + car_ID + "/manual_control/steering", Int16, queue_size=10)
+        self.speed_pub = rospy.Publisher("/" + car_ID + "/manual_control/speed", Int16, queue_size=10)
 
 
 
