@@ -7,7 +7,7 @@ Watch it in action in the following [video](https://youtu.be/VJ3MyKVnnj8)
 
 
 ## Network architecture
-This network was inspired by the residual neural network architecture, specially the **densenet** approach to concatenate the outputs of the skip layer connections instead of adding them.
+This network was inspired by the residual neural network architecture, specially the **densenet** approach to concatenate the outputs of the skip layer connections instead of adding them, using just 48,300 parameters.
 ![model architecture](./imgs/v_4.png)
 
 
