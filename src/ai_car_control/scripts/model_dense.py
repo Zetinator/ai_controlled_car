@@ -31,7 +31,7 @@ class CNN(object):
 
 
         # reference
-        xin = Conv2D(filters=16,
+        xin = Conv2D(filters=64,
                         strides=2,
                         kernel_size=4,
                         activation='relu',
@@ -52,9 +52,9 @@ class CNN(object):
         # parallel stage
         dilation_rate = 1
         y = xin
-        for i in range(2):
-            a = Conv2D(filters=32,
-                        kernel_size=5,
+        for i in range(3):
+            a = Conv2D(filters=16,
+                        kernel_size=3,
                         padding='same',
                         activation='relu',
                         dilation_rate=dilation_rate)(xin)
@@ -64,26 +64,23 @@ class CNN(object):
 
 
         # dense interconnection
-        dilation_rate = 1
         x = skip
-        for i in range(1):
-            x = keras.layers.concatenate([x, y])
-            y = Conv2D(filters=64,
-                        activation='relu',
-                        kernel_size=1,
-                        padding='same')(y)
-            y = BatchNormalization()(y)
-            y = Conv2D(filters=16,
-                        activation='relu',
-                        kernel_size=5,
-                        padding='same',
-                        dilation_rate=dilation_rate)(y)
-            y = BatchNormalization()(y)
-            y = Dropout(dropout)(y)
-            dilation_rate += 1
+        x = keras.layers.concatenate([x, y])
+        y = Conv2D(filters=64,
+                    activation='relu',
+                    kernel_size=1,
+                    padding='same')(x)
+        y = BatchNormalization()(y)
+        y = Conv2D(filters=16,
+                    activation='relu',
+                    kernel_size=5,
+                    padding='same')(y)
+        y = BatchNormalization()(y)
+        y = Dropout(dropout)(y)
 
 
         # input image skip connection
+        y = keras.layers.concatenate([x, y])
         x = keras.layers.concatenate([y, skip])
         y = Conv2D(filters=1,
                         strides=2,
