@@ -6,6 +6,11 @@ Watch it in action in the following [video](https://youtu.be/VJ3MyKVnnj8)
 ![car_working_image](./imgs/v_3.png)
 
 
+## Network architecture
+This network was inspired by the residual neural network architecture, specially the **densenet** approach to concatenate the outputs of the skip layer connections instead of adding them.
+![model architecture](./imgs/v_4.png)
+
+
 ### Tested with the following settings
 - **ROS** (melodic, 1.14.3)
 - **Ubuntu** (16.04.5 LTS)
