@@ -31,7 +31,7 @@ class CNN(object):
 
 
         # reference
-        xin = Conv2D(filters=64,
+        xin = Conv2D(filters=32,
                         strides=2,
                         kernel_size=4,
                         activation='relu',
