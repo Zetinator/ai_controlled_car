@@ -1,6 +1,6 @@
 <launch>
   <node name="ai_car_control" pkg="ai_car_control" type="ai_car_control.py" output="screen" >
-    <param name="weights_path" type="string" value="/home/zetinator/Documents/ai_controlled_car/src/ai_car_control/weights/dieta_weights_v2.h5"/>
+    <param name="weights_path" type="string" value="/home/zetinator/Documents/ai_controlled_car/src/ai_car_control/weights/v_4.h5"/>
     <param name="max_speed" type="int" value="350"/>
     <param name="car_ID" type="string" value="AutoNOMOS_mini"/>
   </node>
